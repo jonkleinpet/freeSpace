@@ -13,7 +13,7 @@ const usersService = {
     return db('users')
       .where({ username })
       .first()
-      .then(([user]) => !!user);
+      .then(user => !!user);
   },
 
   hashPassword(password) {
