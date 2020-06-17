@@ -4,17 +4,16 @@ const helpers = {
   validInputs(body) {
     
     let reply = {
-      error: null,
+      inputError: null,
       message: ''
     };
 
     for (const key of ['username', 'password']) {
       if (!body[key]) {
-        reply.error = true;
+        reply.inputError = true;
         reply.message = `missing ${key} in request body`;
       }
     }
-
     return reply;
   },
 
