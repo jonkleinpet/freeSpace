@@ -11,12 +11,40 @@ usersPath
     try {
       const knex = req.app.get('db');
       const { body } = req;
-      helpers.validInputs(body);
+      const { inputError, message } = await helpers.validInputs(body);
+
+      if (inputError) {
+        return res.send({ message });
+      }
+
+      const passMessage = await helpers.validPassword(body.password);
+      if (passMessage) {
+        return res.send({ passMessage });
+      }
+
+      const hashPass = await usersService.hashPassword(body.password);
+      const user = {
+        username: body.username,
+        password: hashPass
+      };
+
+      const newUser = await usersService.registerUser(knex, user);
+      const sub = newUser.username;
+      const payload = {
+        id: newUser.id
+      };
+
+      return res.send({ authToken: authService.createJwt(sub, payload) });
     }
 
     catch (error) {
       next(error);
     }
+  });
+
+usersPath
+  .route('/login')
+  .post(parser, async (res, req, next) => {
     
   });
 

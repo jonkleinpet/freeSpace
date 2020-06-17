@@ -18,7 +18,7 @@ app.use(helmet());
 app.use(cors());
 
 // Routes
-//app.use('/api', usersRoute);
+app.use('/api', usersRoute);
 
 // Basic error handling
 app.use(function errorHandler(error, req, res, next) {
@@ -30,11 +30,6 @@ app.use(function errorHandler(error, req, res, next) {
     response = { message: error.message, error };
   }
   res.status(500).json(response);
-});
-
-// Remove after adding routes
-app.get('/', (req, res) => {
-  res.send('API recieved get request');
 });
 
 module.exports = app;
